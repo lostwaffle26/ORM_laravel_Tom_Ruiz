@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Salarie;
+use App\Employee;
 use Illuminate\Http\Request;
-use App\Department;
 
-class DepartmentApiController extends Controller
+class SalarieApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class DepartmentApiController extends Controller
      */
     public function index()
     {
-        return Department::all();
+        return Salarie::all();
     }
 
     /**
@@ -25,43 +26,44 @@ class DepartmentApiController extends Controller
      */
     public function store(Request $request)
     {
-        return Department::create($request->all());
+        Employee::find($request['emp_no'])->salary->update(['to_date' => now()]);
+        return Salarie::create($request->all(), ['from_date' => now(), 'to_date' => '9999-01-01']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Salarie  $salarie
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Salarie $salarie)
     {
-        return Department::find($id);
+        return $salarie;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Salarie  $salarie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Salarie $salarie)
     {
-        Department::find($id)->update($request->all());
-        return Department::find($id);
+        $salarie->update($request->all());
+        return $salarie;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Salarie  $salarie
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Salarie $salarie)
     {
-        $d = department::find($id);
-        Department::find($id)->delete();
-        return $d;
+        $s = $salarie;
+        $salarie->delete();
+        return $s;
     }
 }

@@ -14,7 +14,7 @@ class EmployeeApiController extends Controller
      */
     public function index()
     {
-        return Employee::paginate(10);
+        return Employee::paginate();
     }
 
     /**
@@ -37,7 +37,7 @@ class EmployeeApiController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return $employee;
     }
 
     /**
@@ -49,8 +49,8 @@ class EmployeeApiController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        return null; 
-        return $employee->update($request->all());
+        $employee->update($request->all());
+        return $employee;
     }
 
     /**
@@ -63,6 +63,6 @@ class EmployeeApiController extends Controller
     {
         $e = $employee;
         $employee->delete();
-        return $e; 
+        return $e;
     }
 }

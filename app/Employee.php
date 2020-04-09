@@ -21,5 +21,6 @@ class Employee extends Model
 	public function titles() {
 		return $this->hasMany('App\Title', 'emp_no'); 	
 	}
-
-}
+	public function salary() {
+		return $this->
+	}

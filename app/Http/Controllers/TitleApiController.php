@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
+use App\Title;
 use Illuminate\Http\Request;
-use App\Department;
 
-class DepartmentApiController extends Controller
+class TitleApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class DepartmentApiController extends Controller
      */
     public function index()
     {
-        return Department::all();
+        return Title::all();
     }
 
     /**
@@ -25,43 +26,44 @@ class DepartmentApiController extends Controller
      */
     public function store(Request $request)
     {
-        return Department::create($request->all());
+        Employee::find($request['emp_no'])->title->update(['to_date' => now()]);
+        return Title::create($request->all(), ['from_date' => now(), 'to_date' => '9999-01-01']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Title  $title
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Title $title)
     {
-        return Department::find($id);
+        return $title;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Title  $title
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Title $title)
     {
-        Department::find($id)->update($request->all());
-        return Department::find($id);
+        $title->update($request->all());
+        return $title;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Title  $title
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Title $title)
     {
-        $d = department::find($id);
-        Department::find($id)->delete();
-        return $d;
+        $t = $title;
+        $title->delete();
+        return $t;
     }
 }
